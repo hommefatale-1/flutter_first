@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
           child:Container(
             width: 400, height: 400,color: CupertinoColors.systemGreen,
             child: Align(
-              alignment: Alignment.centerLeft,
+              alignment: Alignment.center,
               child: Container(
                 width: 100, height: 100, color: Colors.orange,
               ),
