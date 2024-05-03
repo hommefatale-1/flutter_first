@@ -23,7 +23,7 @@ class MyWidget extends StatelessWidget {
         builder: (BuildContext context) {
           return AlertDialog(
             title : Text("안내문구"),
-            content: Image.asset('iu.jpg'),
+            content: Image.asset('kirby.jpg'),
             actions: [
               TextButton(
                   onPressed: (){

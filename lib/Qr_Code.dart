@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,10 +18,9 @@ class MyApp extends StatelessWidget {
             children: [
               Icon(Icons.menu),
               Center(child: Text("커비의 모험")),
-              Image.asset(
-                'kirby.jpg',
-                width: 100,
-                height: 80,
+              Icon(
+                Icons.account_tree_rounded,
+                size: 50,
               )
             ],
           ),
@@ -33,17 +33,17 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyWidget extends StatefulWidget {
+class MyWidget extends StatelessWidget {
   const MyWidget({super.key});
 
   @override
-  State<MyWidget> createState() => _MyWidgetState();
-}
-
-class _MyWidgetState extends State<MyWidget> {
-  @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Center(
+        child: QrImageView(
+            data: "https://www.youtube.com",
+            version: QrVersions.auto,
+            size: 300,
+        ),
+      );
   }
 }
-

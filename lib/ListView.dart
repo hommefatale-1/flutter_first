@@ -19,7 +19,49 @@ class MyWidget extends StatefulWidget {
 }
 
 class _MyWidgetState extends State<MyWidget> {
-  bool isbool = false;
+  List<Map> list = [{
+    "imgPath":"kirby.jpg",
+    "title":"title1",
+    "contents":"contents1",
+    "price":"100",
+    "favorite":true
+  },{
+    "imgPath":"kirby.jpg",
+    "title":"title2",
+    "contents":"contents2",
+    "price":"200",
+    "favorite":false
+  }];
+
+  Widget listItem(index){
+    return ListTile(
+      leading: Image.asset("${list[index]["imgPath"]}"),
+      title: Text("${list[index]["title"]}"), // 각 항목에 대해 고유한 제목을 생성
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("설명 :  ${list[index]["contents"]}"),
+          Text("가격 : ${list[index]["price"]}")
+        ],
+      ),
+      trailing: IconButton(
+        icon: Icon(
+          list[index]["favorite"]?Icons.favorite:Icons.favorite_border
+        ,color: Colors.red,
+        ),
+        onPressed: () {
+          setState(() {// 상태를 토글하여 변경
+          if(list[index]["favorite"]){
+            list[index]["favorite"] = false;
+          }else{
+            list[index]["favorite"] = true;
+          }
+          });
+        },
+      ),
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -28,30 +70,9 @@ class _MyWidgetState extends State<MyWidget> {
         title: Text("리스트 뷰 테스트"),
       ),
       body: ListView.builder(
-        itemCount: 100,
+        itemCount: list.length,
         itemBuilder: (context, index) {
-          return ListTile(
-            leading: Image.asset('kirby.jpg'),
-            title: Text("${index + 1}번째 사용자"),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("설명 :  사용한지 10년밖에 안된 노트북 팔아요~"),
-                Text("가격 : 제쉬요~")
-              ],
-            ),
-            trailing: IconButton(
-              icon: Icon(
-                isbool ? Icons.favorite : Icons.favorite_border,
-                color: isbool ? Colors.red : Colors.black,
-              ),
-              onPressed: () {
-                setState(() {
-                  isbool = !isbool;
-                });
-              },
-            ),
-          );
+          return listItem(index); // 각 항목에 대한 위젯을 생성하여 반환
         },
       ),
       bottomNavigationBar: BottomAppBar(),

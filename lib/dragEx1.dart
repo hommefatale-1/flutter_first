@@ -5,7 +5,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,11 +17,7 @@ class MyApp extends StatelessWidget {
             children: [
               Icon(Icons.menu),
               Center(child: Text("커비의 모험")),
-              Image.asset(
-                'kirby.jpg',
-                width: 100,
-                height: 80,
-              )
+              Image.asset('kirby.jpg',width: 80,height: 80,)
             ],
           ),
           backgroundColor: Colors.purpleAccent,
@@ -34,16 +30,44 @@ class MyApp extends StatelessWidget {
 }
 
 class MyWidget extends StatefulWidget {
-  const MyWidget({super.key});
-
   @override
   State<MyWidget> createState() => _MyWidgetState();
 }
 
 class _MyWidgetState extends State<MyWidget> {
+ double width = 100;
+ double height = 100;
+ Color color = Colors.black;
+ bool isToggled = false;
+
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Center(
+      child: GestureDetector(
+        onTap: () {
+          setState(() {
+            if(isToggled){
+              width = 100;
+              height = 100;
+              color = Colors.black;
+            }else{
+              width = 300;
+              height = 500;
+              color = Colors.purple;
+            }
+             isToggled = !isToggled;
+          });
+        },
+        child: AnimatedContainer(
+          duration: Duration(
+            seconds: 5
+          ),
+          width: width,
+          height: height,
+          color: color,
+          curve: Curves.decelerate,
+        ),
+      ),
+    );
   }
 }
-
