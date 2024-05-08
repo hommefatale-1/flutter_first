@@ -5,7 +5,6 @@ import 'package:first/UserAddScreen.dart';
 
 class UserList extends StatefulWidget {
   Database db;
-
   UserList({required this.db});
 
   @override
@@ -14,7 +13,6 @@ class UserList extends StatefulWidget {
 
 class _UserListState extends State<UserList> {
   List<Map<String, dynamic>> list = [];
-  int index = 0;
 
   Future<void> selectUser() async {
     var user = await widget.db.query('TBL_USER'); // SELECT * FROM TBL_USER
@@ -36,11 +34,11 @@ class _UserListState extends State<UserList> {
   }
 
   void userAdd() {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) =>  UserAddScreen(db: widget.db, index: index),)
-    );
+    // Navigator.push(
+    //     context,
+    //     MaterialPageRoute(
+    //         builder: (context) =>  UserAddScreen(db: widget.db, userID: user['ID']),)
+    // );
   }
 
   void deleteUser(BuildContext context, int index) {
@@ -98,7 +96,12 @@ class _UserListState extends State<UserList> {
                   ),
                   IconButton(
                       onPressed: () {
-                        userAdd();
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>  UserAddScreen(db : widget.db, userId: user['ID']))
+                        );
+                        selectUser();
                       },
                       icon: Icon(Icons.add))
                 ],

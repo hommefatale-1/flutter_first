@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:first/users.dart';
-
 //내장DB 사용
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
 
-//
+//DB생성
 Future<Database> InsertDb() async {
   String path = await getDatabasesPath();
   String dbPath = join(path, 'firstDB.db');
@@ -34,7 +33,6 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   Database db;
-
   MyApp(this.db);
 
   @override
@@ -45,7 +43,6 @@ class MyApp extends StatelessWidget {
 
 class MyWidget extends StatefulWidget {
   Database db;
-
   MyWidget(this.db);
 
   @override
