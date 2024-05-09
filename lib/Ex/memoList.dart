@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import 'package:first/memo.dart';
+import 'package:first/Ex//memo.dart';
 
 // 테이블 생성
 Future<Database> InsertDB() async {

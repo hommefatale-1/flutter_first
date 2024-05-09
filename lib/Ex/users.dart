@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import 'package:first/UserAddScreen.dart';
+import 'package:first/Ex/UserAddScreen.dart';
 
 class UserList extends StatefulWidget {
   Database db;
