@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "949309418294",
+    "project_id": "the-bed-is-my-stage",
+    "storage_bucket": "the-bed-is-my-stage.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:949309418294:android:6c2549bf3320dcb0002197",
+        "android_client_info": {
+          "package_name": "com.example.first"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHWnjAvjBy1O4IgoQWzAfk4aeBZvtva8Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
