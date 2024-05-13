@@ -1,8 +1,14 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:first/firebase/firestore.dart';
 import 'package:first/firebase/userList.dart';
+import 'package:first/firebase/googleLogin.dart';
+import 'package:first/firebase/githubLogin.dart';
+import 'package:first/firebase/ImageUpload.dart';
+import 'package:first/firebase/post.dart';
+import 'package:first/firebase/map.dart';
 
 
 void main() async{
@@ -14,6 +20,20 @@ void main() async{
 }
 
 class MyApp extends StatelessWidget {
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+
+  MyApp() {
+    _firebaseMessaging.getToken().then((token) {
+      print("토큰: $token");
+    });
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print("Received a message: ${message.notification?.title}, ${message.notification?.body}");
+    });
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print("Notification clicked: ${message.notification?.title}, ${message.notification?.body}");
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -68,7 +88,7 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
                   children: [
                     CircleAvatar(
                       radius: 50,
-                      backgroundImage: AssetImage('assets/iu.jpg'),
+                      backgroundImage: AssetImage('assets/kirby.jpg'),
                     ),
                     SizedBox(width: 10),
                     Column(
@@ -112,6 +132,56 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
                 Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => UserList())
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.add),
+              title : Text("게시글"),
+              onTap: (){
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => PostUpload())
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.add),
+              title : Text("지도"),
+              onTap: (){
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => TestMap())
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.login),
+              title : Text("googlelogin"),
+              onTap: (){
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => NewPage(),)
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.login),
+              title : Text("GitHublogin"),
+              onTap: (){
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => GitHubLogin(),)
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.image),
+              title : Text("Image"),
+              onTap: (){
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ImageUpload(),)
                 );
               },
             ),

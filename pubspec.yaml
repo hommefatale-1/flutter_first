@@ -42,6 +42,18 @@ dependencies:
   cupertino_icons: ^1.0.6
   firebase_core: ^2.31.0
   cloud_firestore: ^4.17.3
+  google_sign_in:
+  firebase_auth:
+  firebase_auth_web:
+  flutter_web_auth:
+  firebase_messaging:
+  firebase_storage:
+  image_picker:
+  google_maps_flutter:
+  geolocator:
+  geocoding:
+
+
 
 dev_dependencies:
   flutter_test:
