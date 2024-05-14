@@ -1,6 +1,8 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:first/Login/Session.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'package:first/firebase/firestore.dart';
 import 'package:first/firebase/userList.dart';
@@ -9,17 +11,25 @@ import 'package:first/firebase/githubLogin.dart';
 import 'package:first/firebase/ImageUpload.dart';
 import 'package:first/firebase/post.dart';
 import 'package:first/firebase/map.dart';
+import 'package:first/firebase/Login.dart';
+import 'package:first/firebase/Join.dart';
 
-
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(MyApp());
+  runApp(
+      ChangeNotifierProvider(
+        create: (context) => Session(),
+        child: MyApp(),
+      )
+  );
 }
 
 class MyApp extends StatelessWidget {
+
+
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
   MyApp() {
@@ -28,12 +38,15 @@ class MyApp extends StatelessWidget {
     });
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print("Received a message: ${message.notification?.title}, ${message.notification?.body}");
+      print(
+          "Received a message: ${message.notification?.title}, ${message.notification?.body}");
     });
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print("Notification clicked: ${message.notification?.title}, ${message.notification?.body}");
+      print(
+          "Notification clicked: ${message.notification?.title}, ${message.notification?.body}");
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -51,15 +64,29 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMixin {
+class _MyHomePageState extends State<MyHomePage>
+    with SingleTickerProviderStateMixin {
+
   TabController? _tabController;
   int _currentIndex = 0;
+  late String userName; // 사용자 이름을 저장할 변수 추가
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
   }
+
+  // 사용자 이름을 초기화하는 함수
+  String _initializeUserName() {
+    var session = Provider.of<Session>(context);
+    setState(() {
+      userName = session.isLoggedIn ? session.user!.id : '김승인';
+    });
+    return userName;
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -79,9 +106,7 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
           padding: EdgeInsets.zero,
           children: <Widget>[
             DrawerHeader(
-              decoration: BoxDecoration(
-                  color: Colors.blue
-              ),
+              decoration: BoxDecoration(color: Colors.blue),
               child: Align(
                 alignment: Alignment.bottomLeft,
                 child: Row(
@@ -96,7 +121,7 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          '홍길동',
+                        _initializeUserName(),
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 20,
@@ -116,93 +141,96 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
               ),
             ),
             ListTile(
-              leading: Icon(Icons.add),
-              title : Text("파이어스토어"),
-              onTap: (){
+              leading: Icon(Icons.login),
+              title: Text("로그인"),
+              onTap: () {
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => FireEx1())
-                );
+                    context, MaterialPageRoute(builder: (context) => Login()));
               },
             ),
             ListTile(
               leading: Icon(Icons.add),
-              title : Text("리스트"),
-              onTap: (){
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => UserList())
-                );
+              title: Text("파이어스토어"),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => FireEx1()));
               },
             ),
             ListTile(
               leading: Icon(Icons.add),
-              title : Text("게시글"),
-              onTap: (){
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => PostUpload())
-                );
+              title: Text("리스트"),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => UserList()));
               },
             ),
             ListTile(
               leading: Icon(Icons.add),
-              title : Text("지도"),
-              onTap: (){
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => TestMap())
-                );
+              title: Text("게시글"),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => PostUpload()));
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.add),
+              title: Text("지도"),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => TestMap()));
               },
             ),
             ListTile(
               leading: Icon(Icons.login),
-              title : Text("googlelogin"),
-              onTap: (){
+              title: Text("회원가입"),
+              onTap: () {
                 Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => NewPage(),)
-                );
+                    MaterialPageRoute(
+                      builder: (context) => Join(),
+                    ));
               },
             ),
             ListTile(
               leading: Icon(Icons.login),
-              title : Text("GitHublogin"),
-              onTap: (){
+              title: Text("GitHublogin"),
+              onTap: () {
                 Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => GitHubLogin(),)
-                );
+                    MaterialPageRoute(
+                      builder: (context) => GitHubLogin(),
+                    ));
               },
             ),
             ListTile(
               leading: Icon(Icons.image),
-              title : Text("Image"),
-              onTap: (){
+              title: Text("Image"),
+              onTap: () {
                 Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => ImageUpload(),)
-                );
+                    MaterialPageRoute(
+                      builder: (context) => ImageUpload(),
+                    ));
               },
             ),
             ListTile(
               leading: Icon(Icons.home),
-              title : Text("Home"),
-              onTap: (){
+              title: Text("Home"),
+              onTap: () {
                 Navigator.pop(context);
               },
             ),
             ListTile(
               leading: Icon(Icons.settings),
-              title : Text("setting"),
-              onTap: (){
+              title: Text("setting"),
+              onTap: () {
                 Navigator.pop(context);
               },
             ),
             ListTile(
               leading: Icon(Icons.logout),
-              title : Text("logout"),
-              onTap: (){
+              title: Text("logout"),
+              onTap: () {
                 Navigator.pop(context);
               },
             ),
@@ -227,7 +255,7 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
             _currentIndex = index;
           });
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('${_currentIndex+1} 번째 탭 클릭 ')),
+            SnackBar(content: Text('${_currentIndex + 1} 번째 탭 클릭 ')),
           );
         },
       ),
