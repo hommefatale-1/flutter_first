@@ -13,6 +13,7 @@ import 'package:first/firebase/post.dart';
 import 'package:first/firebase/map.dart';
 import 'package:first/firebase/Login.dart';
 import 'package:first/firebase/Join.dart';
+import 'package:first/firebase/emailLogin.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -146,6 +147,14 @@ class _MyHomePageState extends State<MyHomePage>
               onTap: () {
                 Navigator.push(
                     context, MaterialPageRoute(builder: (context) => Login()));
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.login),
+              title: Text("이메일로그인"),
+              onTap: () {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => EmailLogin()));
               },
             ),
             ListTile(

@@ -32,14 +32,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _login() async {
     FirebaseFirestore fs = FirebaseFirestore.instance;
-    CollectionReference userlist = fs.collection("userlist");
+    CollectionReference USERLIST = fs.collection("USERLIST");
 
     String userId = _userIdController.text;
     String password = _passwordController.text;
 
     // 사용자의 ID와 비밀번호가 일치하는지 확인합니다.
     final checkUser = await fs
-        .collection('userlist')
+        .collection('USERLIST')
         .where('id', isEqualTo: userId)
         .where('pwd', isEqualTo: password)
         .get();
@@ -48,7 +48,17 @@ class _HomeScreenState extends State<HomeScreen> {
       // 세션 객체 생성
       final session = Provider.of<Session>(context, listen: false);
       final userData = checkUser.docs.first.data();
-      session.login(userData['id'], userData['name'], userData['email'], userData['phone']); // 사용자 데이터를 전달합니다.
+      // 사용자 데이터가 유효한지 확인하고 세션에 전달합니다.
+      String name = userData['name'] ?? ''; // 이름 필드가 없는 경우 기본값으로 빈 문자열 사용
+      String email = userData['email'] ?? ''; // 이메일 필드가 없는 경우 기본값으로 빈 문자열 사용
+      String phone = userData['phone'].toString() ?? ''; // 휴대폰 필드가 없는 경우 기본값으로 빈 문자열 사용
+
+      session.login(userId, name, email, phone);
+      // 로그인 후 메인 페이지로 이동
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => MyApp()),
+      );
     } else {
       // 사용자가 존재하지 않거나 비밀번호가 일치하지 않는 경우 오류 메시지를 표시합니다.
       ScaffoldMessenger.of(context).showSnackBar(

@@ -4,7 +4,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:first/firebase/PostGrid.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -84,12 +83,6 @@ void _post() async{
       setState(() {
         _selectedImage = null;
       });
-
-      // 게시글 등록 후 PostGrid.dart 파일로 이동
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => PostGrid()),
-      );
 
     }catch (error) {
       print('게시글 등록 중 오류 발생: $error');
